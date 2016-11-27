@@ -3,7 +3,6 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
 import { Form, FormGroup, FormControl, InputGroup, Panel, Glyphicon } from 'react-bootstrap';
 import InfoPanel from './components/InfoPanel';
 import ErrorPanel from './components/ErrorPanel';
-import iso from 'iso-3166-1-alpha-2';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -11,7 +10,7 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            number: null,
+            number: '659599936',
             country: 'ES',
         };
         this.onNumberChange = this.onNumberChange.bind(this);
@@ -52,7 +51,7 @@ class App extends Component {
         let phone, error;
 
         try {
-            phone = phoneUtil.parse(number, country || 'ZZ');
+            phone = phoneUtil.parseAndKeepRawInput(number, country || 'ZZ');
         } catch (e) {
             error = e.message;
         }
@@ -86,7 +85,7 @@ class App extends Component {
                     </FormGroup>
                 </form>
                 <ErrorPanel number={number} error={error} />
-                <InfoPanel phone={phone} />
+                <InfoPanel phone={phone} region={country} />
             </div>
         );
     }
