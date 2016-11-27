@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
-import { Form, FormGroup, FormControl, InputGroup, Panel, Glyphicon } from 'react-bootstrap';
+import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
+import ValidationPanel from './components/ValidationPanel';
 import InfoPanel from './components/InfoPanel';
+import FormattingPanel from './components/FormattingPanel';
 import ErrorPanel from './components/ErrorPanel';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -85,7 +87,9 @@ class App extends Component {
                     </FormGroup>
                 </form>
                 <ErrorPanel number={number} error={error} />
-                <InfoPanel phone={phone} region={country} />
+                <ValidationPanel phone={phone} region={country} />
+                <InfoPanel phone={phone} />
+                <FormattingPanel phone={phone} />
             </div>
         );
     }
