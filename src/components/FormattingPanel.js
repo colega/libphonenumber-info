@@ -1,6 +1,6 @@
 import React from 'react';
 import { Panel, Table } from 'react-bootstrap';
-import { PhoneNumberUtil, PhoneNumberType, PhoneNumberFormat } from 'google-libphonenumber';
+import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 

@@ -12,12 +12,28 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 class App extends Component {
     constructor(props) {
         super(props);
-        const country = this.getUserCountry(),
-            number = this.getExampleNumber(country);
+        const {number, country} = this.getInitialNumberAndCountry();
+        console.log(window.location.href);
         this.state = {number, country};
 
         this.onNumberChange = this.onNumberChange.bind(this);
         this.onCountryChange = this.onCountryChange.bind(this);
+    }
+
+    getInitialNumberAndCountry() {
+        const pattern = /\/(([A-Z]{2})\/)?([^\/]+)/,
+            path = window.location.pathname,
+            matches = path.match(pattern) || [];
+
+        let number = matches[3] || '',
+            country = matches[2] || '';
+
+        if (!number) {
+            country = this.getUserCountry();
+            number = this.getExampleNumber(country);
+        }
+
+        return {number, country};
     }
 
     getUserCountry() {
@@ -30,15 +46,31 @@ class App extends Component {
     }
 
     onNumberChange(e) {
-        this.setState({
-            number: e.target.value
+        const number = e.target.value;
+        this.setState((state) => {
+            const {country} = state;
+            this.updateUrl({number, country});
+            return {number};
         });
     }
 
     onCountryChange(e) {
-        this.setState({
-            country: e.target.value.toUpperCase().slice(0,2)
+        const country = e.target.value.toUpperCase().slice(0,2);
+        this.setState((state) => {
+            const {number} = state;
+            this.updateUrl({number, country});
+            return {country};
         });
+    }
+
+    updateUrl({number, country}) {
+        let newUrl = '/';
+        if (country && number) {
+            newUrl = `/${country}/${number}`;
+        } else if (number) {
+            newUrl = `/${number}`;
+        }
+        window.history.replaceState({}, 'libphonenumber.info', newUrl);
     }
 
     getPhoneValidationState({number, phone, error}) {
