@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
 import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
-import ValidationPanel from './components/ValidationPanel';
-import InfoPanel from './components/InfoPanel';
-import FormattingPanel from './components/FormattingPanel';
-import ErrorPanel from './components/ErrorPanel';
+import ValidationPanel from './panels/ValidationPanel';
+import InfoPanel from './panels/InfoPanel';
+import FormattingPanel from './panels/FormattingPanel';
+import ErrorPanel from './panels/ErrorPanel';
 import iso from 'iso-3166-1-alpha-2';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
@@ -12,33 +12,17 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 class App extends Component {
     constructor(props) {
         super(props);
-        const {number, country} = this.getInitialNumberAndCountry();
-        console.log(window.location.href);
+        let number = props.number || ""
+        let country = (props.country || "").toUpperCase()
+
+        if (!number) {
+          number = this.getExampleNumber(country);
+        }
+
         this.state = {number, country};
 
         this.onNumberChange = this.onNumberChange.bind(this);
         this.onCountryChange = this.onCountryChange.bind(this);
-    }
-
-    getInitialNumberAndCountry() {
-        const pattern = /\/(([A-Z]{2})\/)?([^\/]+)/,
-            path = window.location.pathname,
-            matches = path.match(pattern) || [];
-
-        let number = matches[3] || '',
-            country = matches[2] || '';
-
-        if (!number) {
-            country = this.getUserCountry();
-            number = this.getExampleNumber(country);
-        }
-
-        return {number, country};
-    }
-
-    getUserCountry() {
-        const country = navigator.language.split('-').pop();
-        return this.isValidCountry(country) ? country : '';
     }
 
     isValidCountry(country) {
@@ -64,13 +48,15 @@ class App extends Component {
     }
 
     updateUrl({number, country}) {
-        let newUrl = '/';
-        if (country && number) {
-            newUrl = `/${country}/${number}`;
-        } else if (number) {
-            newUrl = `/${number}`;
+        if (window) {
+          let newUrl = '/';
+          if (country && this.isValidCountry(country) && number) {
+              newUrl = `/${country}/${number}`;
+          } else if (number) {
+              newUrl = `/${number}`;
+          }
+          window.history.replaceState({}, 'libphonenumber.info', newUrl);
         }
-        window.history.replaceState({}, 'libphonenumber.info', newUrl);
     }
 
     getPhoneValidationState({number, phone, error}) {

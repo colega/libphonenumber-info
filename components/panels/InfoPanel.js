@@ -1,7 +1,7 @@
 import React from 'react';
 import { Panel, Table, Label } from 'react-bootstrap';
 import { PhoneNumber } from 'google-libphonenumber';
-import LabelGenerator from './../utils/LabelGenerator';
+import LabelGenerator from './../../utils/LabelGenerator';
 
 class InfoPanel extends React.Component {
     render() {

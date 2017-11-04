@@ -2,7 +2,7 @@ import React from 'react';
 import { Panel, Table } from 'react-bootstrap';
 import { PhoneNumberUtil, PhoneNumberType } from 'google-libphonenumber';
 import iso from 'iso-3166-1-alpha-2';
-import LabelGenerator from './../utils/LabelGenerator';
+import LabelGenerator from './../../utils/LabelGenerator';
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -21,7 +21,7 @@ class ValidationPanel extends React.Component {
 
             isPossibleNumber = phoneUtil.isPossibleNumber(phone),
             isPossibleNumberLabel = label.boolean(isPossibleNumber),
-            notPossibleNumberReasonLabel = !isPossibleNumber 
+            notPossibleNumberReasonLabel = !isPossibleNumber
                 ? label.constant(PhoneNumberUtil.ValidationResult, phoneUtil.isPossibleNumberWithReason(phone))
                 : false,
 
