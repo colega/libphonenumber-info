@@ -17,10 +17,6 @@ class App extends Component {
         let country = (props.country || "").toUpperCase();
         let home = props.home;
 
-        if (!number) {
-          number = this.getExampleNumber(country);
-        }
-
         this.state = {number, country, home};
 
         this.onNumberChange = this.onNumberChange.bind(this);
