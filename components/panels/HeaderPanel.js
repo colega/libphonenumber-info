@@ -9,7 +9,7 @@ class HeaderPanel extends React.Component {
                     <Jumbotron>
                         <h1>libphonenumber information</h1>
                         <p>This website provides a user-friendly access to the phone number information provided by Google's libphonenumber.</p>
-                        <p><Button bsStyle="primary" onClick={this.props.setDemoNumber} block>Check some random number!</Button></p>
+                        <p><Button bsStyle="primary" onClick={this.props.setDemoNumber} block>Check with an example number</Button></p>
                     </Jumbotron>
                 </Collapse>
                 <Panel>
