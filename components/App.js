@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber';
-import { FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
+import { Jumbotron, FormGroup, FormControl, InputGroup, Glyphicon } from 'react-bootstrap';
+import HeaderPanel from './panels/HeaderPanel';
 import ValidationPanel from './panels/ValidationPanel';
 import InfoPanel from './panels/InfoPanel';
 import FormattingPanel from './panels/FormattingPanel';
@@ -12,14 +13,15 @@ const phoneUtil = PhoneNumberUtil.getInstance();
 class App extends Component {
     constructor(props) {
         super(props);
-        let number = props.number || ""
-        let country = (props.country || "").toUpperCase()
+        let number = props.number || "";
+        let country = (props.country || "").toUpperCase();
+        let home = props.home;
 
         if (!number) {
           number = this.getExampleNumber(country);
         }
 
-        this.state = {number, country};
+        this.state = {number, country, home};
 
         this.onNumberChange = this.onNumberChange.bind(this);
         this.onCountryChange = this.onCountryChange.bind(this);
@@ -34,7 +36,7 @@ class App extends Component {
         this.setState((state) => {
             const {country} = state;
             this.updateUrl({number, country});
-            return {number};
+            return {number, home: !number};
         });
     }
 
@@ -90,6 +92,17 @@ class App extends Component {
         }
     }
 
+    setDemoNumber() {
+        this.setState((state) => {
+            let country = this.isValidCountry(state.country) ? state.country : "US";
+            const number = this.getExampleNumber(country);
+
+            this.updateUrl({number, country});
+
+            return {number, country, home: false};
+        });
+    }
+
     render() {
         const { number, country } = this.state;
 
@@ -107,6 +120,7 @@ class App extends Component {
 
         return (
             <div>
+                <HeaderPanel jumbotron={this.state.home} setDemoNumber={() => this.setDemoNumber() } />
                 <form>
                     <FormGroup bsSize="large" validationState={countryValidationState}>
                         <InputGroup>

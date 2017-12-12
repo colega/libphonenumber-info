@@ -24,9 +24,9 @@ app.prepare()
 
     let country = requestCountry(req, "ES")
     if (params === false) {
-      params = { country }
+      params = { country, home: true }
     } else if (!params.country) {
-      params.country = { country }
+      params.country = { country, home: true }
     }
 
     app.render(req, res, '/index', Object.assign(params, query))
